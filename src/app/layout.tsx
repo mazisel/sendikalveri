@@ -7,8 +7,45 @@ import { Header } from "@/components/Header";
 const inter = Inter({ subsets: ["latin", "latin-ext"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Sendikal Veri | Sendika Veri Platformu",
-  description: "Türkiye sendikalar, iş kolları ve konfederasyon güncel veri analiz platformu.",
+  metadataBase: new URL("https://sendikalveri.com"),
+  title: {
+    default: "Sendikal Veri | Sendika Veri Platformu",
+    template: "%s | Sendikal Veri",
+  },
+  description: "Türkiye'deki işçi ve kamu sendikaları, konfederasyonlar ve iş kolları hakkında en güncel üye sayıları ve istatistiklerin yer aldığı veri analiz platformu.",
+  keywords: ["sendika", "sendikalar", "işçi sendikaları", "kamu sendikaları", "sendika üye sayısı", "iş kolları", "konfederasyon", "çalışma bakanlığı verileri"],
+  authors: [{ name: "Sendikal Veri" }],
+  creator: "Sendikal Veri",
+  publisher: "Sendikal Veri",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "Sendikal Veri | Sendika Veri Platformu",
+    description: "Türkiye sendikalar, iş kolları ve konfederasyon güncel veri analiz platformu.",
+    url: "https://sendikalveri.com",
+    siteName: "Sendikal Veri",
+    locale: "tr_TR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sendikal Veri | Sendika Veri Platformu",
+    description: "Türkiye sendikalar, iş kolları ve konfederasyon güncel veri analiz platformu.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({

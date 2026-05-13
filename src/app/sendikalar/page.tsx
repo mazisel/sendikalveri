@@ -9,6 +9,13 @@ import { Badge, SectionCard } from "@/components/ui";
 import { getUnions } from "@/lib/data";
 import { formatNumber, normalizeType, queryText, TYPE_LABELS } from "@/lib/format";
 import type { SearchParams } from "@/lib/types";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tüm Sendikalar ve Üye Sayıları",
+  description: "Türkiye'deki işçi ve kamu sendikalarının listesi, güncel üye sayıları, bağlı oldukları konfederasyonlar ve iletişim bilgileri.",
+  keywords: ["sendikalar listesi", "işçi sendikaları", "kamu sendikaları", "sendika üye sayıları", "aktif sendikalar"],
+};
 
 export default async function UnionsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   await connection();

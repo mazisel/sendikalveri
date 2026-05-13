@@ -9,6 +9,13 @@ import { getConfederations } from "@/lib/data";
 import { formatDate, formatNumber, normalizeType, TYPE_LABELS } from "@/lib/format";
 import { toNumber } from "@/lib/format";
 import type { SearchParams } from "@/lib/types";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sendika Konfederasyonları",
+  description: "Türkiye'deki işçi ve kamu konfederasyonları (TÜRK-İŞ, HAK-İŞ, DİSK vb.), üye sayıları ve yetkili sendika bilgileri.",
+  keywords: ["sendika konfederasyonları", "türk-iş", "hak-iş", "disk", "memur-sen", "türkiye kamu-sen", "kesk", "konfederasyon üye sayıları"],
+};
 
 export default async function ConfederationsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   await connection();

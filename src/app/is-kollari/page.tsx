@@ -8,6 +8,13 @@ import { Badge, SectionCard } from "@/components/ui";
 import { getSectors } from "@/lib/data";
 import { formatDate, formatNumber, formatPercent, normalizeType, TYPE_LABELS } from "@/lib/format";
 import type { SearchParams } from "@/lib/types";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "İş ve Hizmet Kolları",
+  description: "Türkiye'deki sendikalı çalışan sayısına göre iş ve hizmet kolları istatistikleri, güncel sendikalaşma oranları.",
+  keywords: ["iş kolları", "hizmet kolları", "sendikalaşma oranı", "sektörel sendika verileri"],
+};
 
 export default async function SectorsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   await connection();

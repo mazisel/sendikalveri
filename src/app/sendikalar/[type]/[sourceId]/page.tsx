@@ -7,12 +7,42 @@ import { PageTransition, AnimatedNumber } from "@/components/motion";
 import { Badge, ContactCard, InfoRow, Metric, SectionCard } from "@/components/ui";
 import { getUnionDetail } from "@/lib/data";
 import { formatDate, formatNumber, typeFromParam, TYPE_LABELS, toNumber } from "@/lib/format";
+import type { Metadata } from "next";
 
-export default async function UnionDetailPage({
-  params,
-}: {
+type Props = {
   params: Promise<{ type: string; sourceId: string }>;
-}) {
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { type, sourceId } = await params;
+  const unionType = typeFromParam(type);
+  const { union } = await getUnionDetail(unionType, Number(sourceId));
+
+  if (!union) {
+    return { title: "Sendika Bulunamadı" };
+  }
+
+  const title = `${union.name} Üye Sayısı ve İletişim Bilgileri`;
+  const description = `${union.name} (${union.full_name ?? TYPE_LABELS[union.type]}), ${union.sector_name ?? union.sector_no ?? ""} iş kolunda faaliyet gösteren, ${formatNumber(union.member_count)} üyeli bir sendikadır. Adres, telefon ve geçmiş üye sayısı verilerini inceleyin.`;
+
+  return {
+    title,
+    description,
+    keywords: [union.name, union.full_name ?? "", "üye sayısı", "iletişim bilgileri", union.sector_name ?? "", TYPE_LABELS[union.type]].filter(Boolean),
+    openGraph: {
+      title,
+      description,
+      type: "article",
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
+  };
+}
+
+export default async function UnionDetailPage({ params }: Props) {
   await connection();
   const { type, sourceId } = await params;
   const unionType = typeFromParam(type);
@@ -35,8 +65,41 @@ export default async function UnionDetailPage({
     value: toNumber(item.member_count),
   }));
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: union.name,
+    alternateName: union.full_name ?? undefined,
+    url: union.website ?? undefined,
+    email: union.email ?? undefined,
+    telephone: union.phone_number ?? undefined,
+    address: union.address ? {
+      "@type": "PostalAddress",
+      streetAddress: union.address,
+      addressCountry: "TR"
+    } : undefined,
+    foundingDate: union.established_year ? String(union.established_year) : undefined,
+    parentOrganization: union.confederation_name ? {
+      "@type": "Organization",
+      name: union.confederation_name
+    } : undefined,
+    member: {
+      "@type": "OrganizationRole",
+      member: {
+        "@type": "Person",
+        name: "Toplam Üye"
+      },
+      startDate: union.updated_at ?? undefined,
+      description: `${toNumber(union.member_count)} üye`
+    }
+  };
+
   return (
     <PageTransition>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="space-y-6 pb-12">
         <Link href="/sendikalar" className="group inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors">
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
