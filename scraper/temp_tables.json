@@ -1,0 +1,710 @@
+{
+    "false": {
+        "topSectorDTO": [
+            {
+                "id": 22,
+                "name": "E\u011e\u0130T\u0130M, \u00d6\u011eRET\u0130M VE B\u0130L\u0130M H\u0130ZMETLER\u0130",
+                "group": "02",
+                "count": 0,
+                "memberCount": 1320271,
+                "percentage": 0.0
+            },
+            {
+                "id": 23,
+                "name": "SA\u011eLIK VE SOSYAL H\u0130ZMETLER",
+                "group": "03",
+                "count": 0,
+                "memberCount": 805381,
+                "percentage": 0.0
+            },
+            {
+                "id": 21,
+                "name": "B\u00dcRO, BANKACILIK VE S\u0130GORTACILIK H\u0130ZMETLER\u0130",
+                "group": "01",
+                "count": 0,
+                "memberCount": 353771,
+                "percentage": 0.0
+            },
+            {
+                "id": 24,
+                "name": "YEREL Y\u00d6NET\u0130M H\u0130ZMETLER\u0130",
+                "group": "04",
+                "count": 0,
+                "memberCount": 146145,
+                "percentage": 0.0
+            },
+            {
+                "id": 31,
+                "name": "D\u0130YANET VE VAKIF H\u0130ZMETLER\u0130",
+                "group": "11",
+                "count": 0,
+                "memberCount": 144152,
+                "percentage": 0.0
+            },
+            {
+                "id": 29,
+                "name": "TARIM VE ORMANCILIK H\u0130ZMETLER\u0130",
+                "group": "09",
+                "count": 0,
+                "memberCount": 76727,
+                "percentage": 0.0
+            },
+            {
+                "id": 27,
+                "name": "BAYINDIRLIK \u0130N\u015eAAT VE K\u00d6Y H\u0130ZMETLER\u0130",
+                "group": "07",
+                "count": 0,
+                "memberCount": 50523,
+                "percentage": 0.0
+            },
+            {
+                "id": 30,
+                "name": "ENERJ\u0130, SANAY\u0130 VE MADENC\u0130L\u0130K H\u0130ZMETLER\u0130",
+                "group": "10",
+                "count": 0,
+                "memberCount": 39433,
+                "percentage": 0.0
+            },
+            {
+                "id": 28,
+                "name": "ULA\u015eTIRMA H\u0130ZMETLER\u0130",
+                "group": "08",
+                "count": 0,
+                "memberCount": 30003,
+                "percentage": 0.0
+            },
+            {
+                "id": 25,
+                "name": "BASIN YAYIN VE \u0130LET\u0130\u015e\u0130M H\u0130ZMETLER\u0130",
+                "group": "05",
+                "count": 0,
+                "memberCount": 27684,
+                "percentage": 0.0
+            }
+        ],
+        "topUnionDTO": [
+            {
+                "id": 311,
+                "name": "E\u011e\u0130T\u0130M-B\u0130R-SEN",
+                "group": "02",
+                "count": 0,
+                "memberCount": 428618,
+                "percentage": 0.0
+            },
+            {
+                "id": 361,
+                "name": "SA\u011eLIK-SEN",
+                "group": "03",
+                "count": 0,
+                "memberCount": 273831,
+                "percentage": 0.0
+            },
+            {
+                "id": 309,
+                "name": "T\u00dcRK E\u011e\u0130T\u0130M-SEN",
+                "group": "02",
+                "count": 0,
+                "memberCount": 249447,
+                "percentage": 0.0
+            },
+            {
+                "id": 316,
+                "name": "E\u011e\u0130T\u0130M-\u0130\u015e",
+                "group": "02",
+                "count": 0,
+                "memberCount": 149013,
+                "percentage": 0.0
+            },
+            {
+                "id": 359,
+                "name": "T\u00dcRK SA\u011eLIK-SEN",
+                "group": "03",
+                "count": 0,
+                "memberCount": 130991,
+                "percentage": 0.0
+            },
+            {
+                "id": 270,
+                "name": "B\u00dcRO MEMUR-SEN",
+                "group": "01",
+                "count": 0,
+                "memberCount": 117046,
+                "percentage": 0.0
+            },
+            {
+                "id": 269,
+                "name": "T\u00dcRK B\u00dcRO-SEN",
+                "group": "01",
+                "count": 0,
+                "memberCount": 88766,
+                "percentage": 0.0
+            },
+            {
+                "id": 485,
+                "name": "D\u0130YANET-SEN",
+                "group": "11",
+                "count": 0,
+                "memberCount": 88259,
+                "percentage": 0.0
+            },
+            {
+                "id": 310,
+                "name": "E\u011e\u0130T\u0130M-SEN",
+                "group": "02",
+                "count": 0,
+                "memberCount": 82986,
+                "percentage": 0.0
+            },
+            {
+                "id": 401,
+                "name": "BEM-B\u0130R-SEN",
+                "group": "04",
+                "count": 0,
+                "memberCount": 54563,
+                "percentage": 0.0
+            }
+        ],
+        "topUnionizationRateDTO": [
+            {
+                "id": 456,
+                "name": "TO\u00c7 B\u0130R-SEN",
+                "group": "TARIM VE ORMANCILIK H\u0130ZMETLER\u0130",
+                "count": 0,
+                "memberCount": 48452,
+                "percentage": 63.15
+            },
+            {
+                "id": 485,
+                "name": "D\u0130YANET-SEN",
+                "group": "D\u0130YANET VE VAKIF H\u0130ZMETLER\u0130",
+                "count": 0,
+                "memberCount": 88259,
+                "percentage": 61.23
+            },
+            {
+                "id": 414,
+                "name": "B\u0130RL\u0130K HABER-SEN",
+                "group": "BASIN YAYIN VE \u0130LET\u0130\u015e\u0130M H\u0130ZMETLER\u0130",
+                "count": 0,
+                "memberCount": 13618,
+                "percentage": 49.19
+            },
+            {
+                "id": 433,
+                "name": "BAYINDIR MEMUR-SEN",
+                "group": "BAYINDIRLIK \u0130N\u015eAAT VE K\u00d6Y H\u0130ZMETLER\u0130",
+                "count": 0,
+                "memberCount": 21229,
+                "percentage": 42.02
+            },
+            {
+                "id": 473,
+                "name": "ENERJ\u0130 B\u0130R\u2013SEN",
+                "group": "ENERJ\u0130, SANAY\u0130 VE MADENC\u0130L\u0130K H\u0130ZMETLER\u0130",
+                "count": 0,
+                "memberCount": 15670,
+                "percentage": 39.74
+            },
+            {
+                "id": 401,
+                "name": "BEM-B\u0130R-SEN",
+                "group": "YEREL Y\u00d6NET\u0130M H\u0130ZMETLER\u0130",
+                "count": 0,
+                "memberCount": 54563,
+                "percentage": 37.33
+            },
+            {
+                "id": 447,
+                "name": "ULA\u015eTIRMA MEMUR-SEN",
+                "group": "ULA\u015eTIRMA H\u0130ZMETLER\u0130",
+                "count": 0,
+                "memberCount": 10715,
+                "percentage": 35.71
+            },
+            {
+                "id": 361,
+                "name": "SA\u011eLIK-SEN",
+                "group": "SA\u011eLIK VE SOSYAL H\u0130ZMETLER",
+                "count": 0,
+                "memberCount": 273831,
+                "percentage": 34.0
+            },
+            {
+                "id": 270,
+                "name": "B\u00dcRO MEMUR-SEN",
+                "group": "B\u00dcRO, BANKACILIK VE S\u0130GORTACILIK H\u0130ZMETLER\u0130",
+                "count": 0,
+                "memberCount": 117046,
+                "percentage": 33.09
+            },
+            {
+                "id": 311,
+                "name": "E\u011e\u0130T\u0130M-B\u0130R-SEN",
+                "group": "E\u011e\u0130T\u0130M, \u00d6\u011eRET\u0130M VE B\u0130L\u0130M H\u0130ZMETLER\u0130",
+                "count": 0,
+                "memberCount": 428618,
+                "percentage": 32.46
+            }
+        ],
+        "unionConfederations": [
+            {
+                "id": 12,
+                "name": "MEMUR-SEN",
+                "group": null,
+                "count": 11,
+                "memberCount": 1078831,
+                "percentage": 0.0
+            },
+            {
+                "id": 11,
+                "name": "T\u00dcRK\u0130YE KAMU-SEN",
+                "group": null,
+                "count": 11,
+                "memberCount": 560060,
+                "percentage": 0.0
+            },
+            {
+                "id": 14,
+                "name": "B\u0130RLE\u015e\u0130K KAMU-\u0130\u015e",
+                "group": null,
+                "count": 10,
+                "memberCount": 189332,
+                "percentage": 0.0
+            },
+            {
+                "id": 10,
+                "name": "KESK",
+                "group": null,
+                "count": 11,
+                "memberCount": 166266,
+                "percentage": 0.0
+            },
+            {
+                "id": 31,
+                "name": "DMK",
+                "group": null,
+                "count": 9,
+                "memberCount": 106508,
+                "percentage": 0.0
+            },
+            {
+                "id": 30,
+                "name": "H\u00dcR SEN",
+                "group": null,
+                "count": 6,
+                "memberCount": 31599,
+                "percentage": 0.0
+            },
+            {
+                "id": 20,
+                "name": "M\u0130L-SEN",
+                "group": null,
+                "count": 9,
+                "memberCount": 13694,
+                "percentage": 0.0
+            },
+            {
+                "id": 16,
+                "name": "\u00c7ALI\u015eAN-SEN",
+                "group": null,
+                "count": 5,
+                "memberCount": 6139,
+                "percentage": 0.0
+            },
+            {
+                "id": 33,
+                "name": "M\u00dcHEND\u0130S TEK-SEN",
+                "group": null,
+                "count": 6,
+                "memberCount": 4592,
+                "percentage": 0.0
+            },
+            {
+                "id": 13,
+                "name": "BASK",
+                "group": null,
+                "count": 9,
+                "memberCount": 4524,
+                "percentage": 0.0
+            },
+            {
+                "id": 32,
+                "name": "B\u0130RL\u0130K-SEN",
+                "group": null,
+                "count": 7,
+                "memberCount": 3304,
+                "percentage": 0.0
+            },
+            {
+                "id": 15,
+                "name": "HAK-SEN",
+                "group": null,
+                "count": 9,
+                "memberCount": 2005,
+                "percentage": 0.0
+            },
+            {
+                "id": 19,
+                "name": "\u015eEH\u0130T GAZ\u0130-SEN",
+                "group": null,
+                "count": 9,
+                "memberCount": 1731,
+                "percentage": 0.0
+            },
+            {
+                "id": 21,
+                "name": "YURT-SEN",
+                "group": null,
+                "count": 5,
+                "memberCount": 1589,
+                "percentage": 0.0
+            },
+            {
+                "id": 17,
+                "name": "T\u00dcM MEMUR-SEN",
+                "group": null,
+                "count": 4,
+                "memberCount": 991,
+                "percentage": 0.0
+            },
+            {
+                "id": 18,
+                "name": "ANADOLU-SEN",
+                "group": null,
+                "count": 6,
+                "memberCount": 784,
+                "percentage": 0.0
+            },
+            {
+                "id": 29,
+                "name": "T\u00dcM KAMU-SEN",
+                "group": null,
+                "count": 5,
+                "memberCount": 484,
+                "percentage": 0.0
+            },
+            {
+                "id": 22,
+                "name": "BA\u011eIMSIZ",
+                "group": null,
+                "count": 146,
+                "memberCount": 146724,
+                "percentage": 0.0
+            }
+        ]
+    },
+    "true": {
+        "topSectorDTO": [
+            {
+                "id": 10,
+                "name": "T\u0130CARET, B\u00dcRO, E\u011e\u0130T\u0130M VE G\u00dcZEL SANATLAR",
+                "group": "10",
+                "count": 0,
+                "memberCount": 4375904,
+                "percentage": 0.0
+            },
+            {
+                "id": 12,
+                "name": "METAL",
+                "group": "12",
+                "count": 0,
+                "memberCount": 1918111,
+                "percentage": 0.0
+            },
+            {
+                "id": 13,
+                "name": "\u0130N\u015eAAT",
+                "group": "13",
+                "count": 0,
+                "memberCount": 1711852,
+                "percentage": 0.0
+            },
+            {
+                "id": 18,
+                "name": "KONAKLAMA VE E\u011eLENCE \u0130\u015eLER\u0130",
+                "group": "18",
+                "count": 0,
+                "memberCount": 1220527,
+                "percentage": 0.0
+            },
+            {
+                "id": 15,
+                "name": "TA\u015eIMACILIK",
+                "group": "15",
+                "count": 0,
+                "memberCount": 1043139,
+                "percentage": 0.0
+            },
+            {
+                "id": 5,
+                "name": "DOKUMA, HAZIR G\u0130Y\u0130M VE DER\u0130",
+                "group": "05",
+                "count": 0,
+                "memberCount": 1013153,
+                "percentage": 0.0
+            },
+            {
+                "id": 20,
+                "name": "GENEL \u0130\u015eLER",
+                "group": "20",
+                "count": 0,
+                "memberCount": 995060,
+                "percentage": 0.0
+            },
+            {
+                "id": 17,
+                "name": "SA\u011eLIK VE SOSYAL H\u0130ZMETLER",
+                "group": "17",
+                "count": 0,
+                "memberCount": 794898,
+                "percentage": 0.0
+            },
+            {
+                "id": 2,
+                "name": "GIDA SANAY\u0130\u0130",
+                "group": "02",
+                "count": 0,
+                "memberCount": 771764,
+                "percentage": 0.0
+            },
+            {
+                "id": 4,
+                "name": "PETROL, K\u0130MYA, LAST\u0130K, PLAST\u0130K VE \u0130LA\u00c7",
+                "group": "04",
+                "count": 0,
+                "memberCount": 602547,
+                "percentage": 0.0
+            }
+        ],
+        "topUnionDTO": [
+            {
+                "id": 240,
+                "name": "H\u0130ZMET-\u0130\u015e",
+                "group": "20",
+                "count": 0,
+                "memberCount": 276537,
+                "percentage": 0.0
+            },
+            {
+                "id": 124,
+                "name": "T\u00dcRK METAL SEND\u0130KASI",
+                "group": "12",
+                "count": 0,
+                "memberCount": 271600,
+                "percentage": 0.0
+            },
+            {
+                "id": 188,
+                "name": "\u00d6Z SA\u011eLIK-\u0130\u015e",
+                "group": "17",
+                "count": 0,
+                "memberCount": 215234,
+                "percentage": 0.0
+            },
+            {
+                "id": 241,
+                "name": "GENEL-\u0130\u015e",
+                "group": "20",
+                "count": 0,
+                "memberCount": 155786,
+                "percentage": 0.0
+            },
+            {
+                "id": 88,
+                "name": "KOOP-\u0130\u015e",
+                "group": "10",
+                "count": 0,
+                "memberCount": 123262,
+                "percentage": 0.0
+            },
+            {
+                "id": 89,
+                "name": "TEZ-KOOP-\u0130\u015e",
+                "group": "10",
+                "count": 0,
+                "memberCount": 117292,
+                "percentage": 0.0
+            },
+            {
+                "id": 239,
+                "name": "BELED\u0130YE-\u0130\u015e",
+                "group": "20",
+                "count": 0,
+                "memberCount": 116076,
+                "percentage": 0.0
+            },
+            {
+                "id": 151,
+                "name": "TES-\u0130\u015e",
+                "group": "14",
+                "count": 0,
+                "memberCount": 67332,
+                "percentage": 0.0
+            },
+            {
+                "id": 97,
+                "name": "\u00d6Z B\u00dcRO-\u0130\u015e",
+                "group": "10",
+                "count": 0,
+                "memberCount": 52077,
+                "percentage": 0.0
+            },
+            {
+                "id": 86,
+                "name": "\u00d6Z F\u0130NANS-\u0130\u015e",
+                "group": "09",
+                "count": 0,
+                "memberCount": 48544,
+                "percentage": 0.0
+            }
+        ],
+        "topUnionizationRateDTO": [
+            {
+                "id": 240,
+                "name": "H\u0130ZMET-\u0130\u015e",
+                "group": "GENEL \u0130\u015eLER",
+                "count": 0,
+                "memberCount": 276537,
+                "percentage": 27.79
+            },
+            {
+                "id": 188,
+                "name": "\u00d6Z SA\u011eLIK-\u0130\u015e",
+                "group": "SA\u011eLIK VE SOSYAL H\u0130ZMETLER",
+                "count": 0,
+                "memberCount": 215234,
+                "percentage": 27.08
+            },
+            {
+                "id": 151,
+                "name": "TES-\u0130\u015e",
+                "group": "ENERJ\u0130",
+                "count": 0,
+                "memberCount": 67332,
+                "percentage": 25.34
+            },
+            {
+                "id": 241,
+                "name": "GENEL-\u0130\u015e",
+                "group": "GENEL \u0130\u015eLER",
+                "count": 0,
+                "memberCount": 155786,
+                "percentage": 15.66
+            },
+            {
+                "id": 4,
+                "name": "\u00d6Z ORMAN \u0130\u015e",
+                "group": "AVCILIK, BALIK\u00c7ILIK, TARIM VE ORMANCILIK",
+                "count": 0,
+                "memberCount": 26001,
+                "percentage": 14.96
+            },
+            {
+                "id": 124,
+                "name": "T\u00dcRK METAL SEND\u0130KASI",
+                "group": "METAL",
+                "count": 0,
+                "memberCount": 271600,
+                "percentage": 14.16
+            },
+            {
+                "id": 86,
+                "name": "\u00d6Z F\u0130NANS-\u0130\u015e",
+                "group": "BANKA, F\u0130NANS VE S\u0130GORTA",
+                "count": 0,
+                "memberCount": 48544,
+                "percentage": 14.08
+            },
+            {
+                "id": 21,
+                "name": "T\u00dcRK MADEN-\u0130\u015e",
+                "group": "MADENC\u0130L\u0130K VE TA\u015e OCAKLARI",
+                "count": 0,
+                "memberCount": 26984,
+                "percentage": 13.73
+            },
+            {
+                "id": 115,
+                "name": "T.\u00c7\u0130MSE-\u0130\u015e SEND\u0130KASI",
+                "group": "\u00c7\u0130MENTO, TOPRAK VE CAM",
+                "count": 0,
+                "memberCount": 26304,
+                "percentage": 13.29
+            },
+            {
+                "id": 239,
+                "name": "BELED\u0130YE-\u0130\u015e",
+                "group": "GENEL \u0130\u015eLER",
+                "count": 0,
+                "memberCount": 116076,
+                "percentage": 11.67
+            }
+        ],
+        "unionConfederations": [
+            {
+                "id": 7,
+                "name": "T\u00dcRK\u0130\u015e",
+                "group": null,
+                "count": 32,
+                "memberCount": 1257316,
+                "percentage": 0.0
+            },
+            {
+                "id": 5,
+                "name": "HAK-\u0130\u015e",
+                "group": null,
+                "count": 20,
+                "memberCount": 827043,
+                "percentage": 0.0
+            },
+            {
+                "id": 4,
+                "name": "D\u0130SK",
+                "group": null,
+                "count": 21,
+                "memberCount": 256829,
+                "percentage": 0.0
+            },
+            {
+                "id": 8,
+                "name": "\u00dcLKEM-\u0130\u015e",
+                "group": null,
+                "count": 10,
+                "memberCount": 6559,
+                "percentage": 0.0
+            },
+            {
+                "id": 6,
+                "name": "T\u00dcM-\u0130\u015e",
+                "group": null,
+                "count": 9,
+                "memberCount": 2155,
+                "percentage": 0.0
+            },
+            {
+                "id": 2,
+                "name": "ANADOLU-\u0130\u015e",
+                "group": null,
+                "count": 3,
+                "memberCount": 252,
+                "percentage": 0.0
+            },
+            {
+                "id": 9,
+                "name": "YEN\u0130DEN M\u0130SK",
+                "group": null,
+                "count": 6,
+                "memberCount": 96,
+                "percentage": 0.0
+            },
+            {
+                "id": 3,
+                "name": "BA\u011eIMSIZ",
+                "group": null,
+                "count": 144,
+                "memberCount": 63540,
+                "percentage": 0.0
+            }
+        ]
+    }
+}
