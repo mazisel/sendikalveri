@@ -28,7 +28,7 @@ export function Header() {
           <div className="flex min-w-0 items-center gap-3">
             <Link href="/" aria-label="Sendikal Veri Ana Sayfası" className="flex shrink-0 items-center gap-2.5 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg transition-all">
               <Image
-                src="/sv-logo.png?v=2"
+                src="/sv-logo.png?v=3"
                 alt="Sendikal Veri Logo"
                 width={36}
                 height={36}
