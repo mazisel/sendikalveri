@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: sendikalveri:latest
+    image: ghcr.io/mazisel/sendikalveri:latest
     container_name: sendikalveri-app
     restart: unless-stopped
     ports:
