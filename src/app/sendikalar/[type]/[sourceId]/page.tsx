@@ -1,13 +1,23 @@
 import Link from "next/link";
-import { connection } from "next/server";
 import { ArrowLeft, Globe, Mail, MapPin, Phone } from "lucide-react";
 import { HistoryLineChart } from "@/components/Charts";
 import { EmptyState, SourceNote } from "@/components/PageControls";
 import { PageTransition, AnimatedNumber } from "@/components/motion";
 import { Badge, ContactCard, InfoRow, Metric, SectionCard } from "@/components/ui";
-import { getUnionDetail } from "@/lib/data";
+import { getUnionDetail, getUnions } from "@/lib/data";
 import { formatDate, formatNumber, typeFromParam, TYPE_LABELS, toNumber } from "@/lib/format";
 import type { Metadata } from "next";
+
+export const revalidate = 3600; // ISR: 1 saatte bir yenile
+export const dynamicParams = true; // Listede olmayan ID'ler için de render et
+
+export async function generateStaticParams() {
+  const unions = await getUnions('all', '');
+  return unions.map((union) => ({
+    type: union.type,
+    sourceId: String(union.source_id),
+  }));
+}
 
 type Props = {
   params: Promise<{ type: string; sourceId: string }>;
@@ -43,7 +53,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function UnionDetailPage({ params }: Props) {
-  await connection();
   const { type, sourceId } = await params;
   const unionType = typeFromParam(type);
   const { union, counts } = await getUnionDetail(unionType, Number(sourceId));
@@ -65,6 +74,8 @@ export default async function UnionDetailPage({ params }: Props) {
     value: toNumber(item.member_count),
   }));
 
+  const canonicalUrl = `https://sendikalveri.com/sendikalar/${type}/${sourceId}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -85,21 +96,26 @@ export default async function UnionDetailPage({ params }: Props) {
     } : undefined,
     member: {
       "@type": "OrganizationRole",
-      member: {
-        "@type": "Person",
-        name: "Toplam Üye"
-      },
+      member: { "@type": "Person", name: "Toplam Üye" },
       startDate: union.updated_at ?? undefined,
       description: `${toNumber(union.member_count)} üye`
     }
   };
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Ana Sayfa", item: "https://sendikalveri.com" },
+      { "@type": "ListItem", position: 2, name: "Sendikalar", item: "https://sendikalveri.com/sendikalar" },
+      { "@type": "ListItem", position: 3, name: union.name, item: canonicalUrl },
+    ],
+  };
+
   return (
     <PageTransition>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <div className="space-y-6 pb-12">
         <Link href="/sendikalar" className="group inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors">
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />

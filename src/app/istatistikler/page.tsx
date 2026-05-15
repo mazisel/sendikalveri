@@ -11,6 +11,8 @@ import { compactName, formatDate, formatNumber, formatPercent, TYPE_LABELS, toNu
 import type { ChartDatum } from "@/lib/types";
 import type { Metadata } from "next";
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: "Sendika İstatistikleri | Türkiye Çalışma Verileri",
   description: "Türkiye'deki işçi ve kamu sendikalarına ait sendikalaşma oranları, iş kolu büyüklükleri ve konfederasyon üye dağılımlarını gösteren kapsamlı istatistikler.",
@@ -19,9 +21,24 @@ export const metadata: Metadata = {
 };
 
 export default async function StatisticsPage() {
-  await connection();
   const { summaries, topSectors, topConfederations, latestDates } = await getDashboardData();
   const latestDate = latestDates[0]?.source_date ?? summaries[0]?.latest_source_date ?? null;
+
+  const datasetLd = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: "Türkiye Sendika İstatistikleri",
+    description: "Türkiye Bakanlık verilerine dayalı işçi ve kamu sendikaları, iş kolları ve konfederasyonlara ait üye sayısı ve sendikalaşma oranları istatistikleri.",
+    url: "https://sendikalveri.com/istatistikler",
+    creator: { "@type": "Organization", name: "Sendikal Veri", url: "https://sendikalveri.com" },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    inLanguage: "tr",
+    temporalCoverage: latestDate ?? undefined,
+    keywords: ["sendika", "sendikalaşma", "iş kolu", "konfederasyon", "Türkiye"],
+    distribution: [
+      { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: "https://sendikalveri.com/sitemap.xml" },
+    ],
+  };
   const sectors: ChartDatum[] = topSectors.map((sector) => ({
     name: compactName(sector.name, 40),
     value: toNumber(sector.current_member_count),
@@ -33,6 +50,7 @@ export default async function StatisticsPage() {
 
   return (
     <PageTransition>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetLd) }} />
       <div className="space-y-6 pb-12">
         <section className="flex flex-col gap-4">
           <div>

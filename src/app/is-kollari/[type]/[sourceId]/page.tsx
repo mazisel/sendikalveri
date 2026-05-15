@@ -1,13 +1,23 @@
 import Link from "next/link";
-import { connection } from "next/server";
 import { ArrowLeft, Users } from "lucide-react";
 import { HistoryLineChart } from "@/components/Charts";
 import { EmptyState, SourceNote } from "@/components/PageControls";
 import { PageTransition, AnimatedNumber } from "@/components/motion";
 import { Badge, Metric, SectionCard } from "@/components/ui";
-import { getSectorDetail } from "@/lib/data";
+import { getSectorDetail, getSectors } from "@/lib/data";
 import { formatDate, formatNumber, formatPercent, typeFromParam, TYPE_LABELS, toNumber } from "@/lib/format";
 import type { Metadata } from "next";
+
+export const revalidate = 3600;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const sectors = await getSectors('all');
+  return sectors.map((sector) => ({
+    type: sector.type,
+    sourceId: String(sector.source_id),
+  }));
+}
 
 type Props = {
   params: Promise<{ type: string; sourceId: string }>;
@@ -38,7 +48,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function SectorDetailPage({
   params,
 }: Props) {
-  await connection();
   const { type, sourceId } = await params;
   const sectorType = typeFromParam(type);
   const { sector, snapshots, unions } = await getSectorDetail(sectorType, Number(sourceId));
@@ -68,12 +77,21 @@ export default async function SectorDetailPage({
     numberOfItems: unions.length,
   };
 
+  const canonicalUrl = `https://sendikalveri.com/is-kollari/${type}/${sourceId}`;
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Ana Sayfa", item: "https://sendikalveri.com" },
+      { "@type": "ListItem", position: 2, name: "İş Kolları", item: "https://sendikalveri.com/is-kollari" },
+      { "@type": "ListItem", position: 3, name: sector.name, item: canonicalUrl },
+    ],
+  };
+
   return (
     <PageTransition>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <div className="space-y-6 pb-12">
         <Link href="/is-kollari" className="group inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors">
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
