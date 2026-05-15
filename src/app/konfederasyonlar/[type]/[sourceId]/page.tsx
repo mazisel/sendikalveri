@@ -7,12 +7,37 @@ import { PageTransition, AnimatedNumber } from "@/components/motion";
 import { Badge, ContactCard, Metric, SectionCard } from "@/components/ui";
 import { getConfederationDetail } from "@/lib/data";
 import { formatDate, formatNumber, formatPercent, typeFromParam, TYPE_LABELS, toNumber } from "@/lib/format";
+import type { Metadata } from "next";
+
+type Props = {
+  params: Promise<{ type: string; sourceId: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { type, sourceId } = await params;
+  const confederationType = typeFromParam(type);
+  const { confederation } = await getConfederationDetail(confederationType, Number(sourceId));
+
+  if (!confederation) {
+    return { title: "Konfederasyon Bulunamadı" };
+  }
+
+  const title = `${confederation.name} | Konfederasyon İstatistikleri`;
+  const description = `${confederation.name} (${confederation.full_name ?? TYPE_LABELS[confederation.type]}), ${formatNumber(confederation.union_count)} bağlı sendika ve ${formatNumber(confederation.member_count)} üyeye sahip bir sendika konfederasyonudur. Güncel veriler, bağlı sendikalar ve üye geçmişi.`;
+
+  return {
+    title,
+    description,
+    keywords: [confederation.name, confederation.full_name ?? "", "konfederasyon", "sendika konfederasyonu", TYPE_LABELS[confederation.type]].filter(Boolean),
+    alternates: { canonical: `https://sendikalveri.com/konfederasyonlar/${type}/${sourceId}` },
+    openGraph: { title, description, type: "article" },
+    twitter: { card: "summary", title, description },
+  };
+}
 
 export default async function ConfederationDetailPage({
   params,
-}: {
-  params: Promise<{ type: string; sourceId: string }>;
-}) {
+}: Props) {
   await connection();
   const { type, sourceId } = await params;
   const confederationType = typeFromParam(type);
@@ -35,8 +60,33 @@ export default async function ConfederationDetailPage({
     value: toNumber(item.member_count),
   }));
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: confederation.name,
+    alternateName: confederation.full_name ?? undefined,
+    url: undefined,
+    email: confederation.email ?? undefined,
+    telephone: confederation.phone_number ?? undefined,
+    address: confederation.address ? {
+      "@type": "PostalAddress",
+      streetAddress: confederation.address,
+      addressCountry: "TR",
+    } : undefined,
+    foundingDate: confederation.established_year ? String(confederation.established_year) : undefined,
+    member: {
+      "@type": "QuantitativeValue",
+      value: toNumber(confederation.member_count),
+      unitText: "Üye",
+    },
+  };
+
   return (
     <PageTransition>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="space-y-6 pb-12">
         <Link href="/konfederasyonlar" className="group inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors">
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />

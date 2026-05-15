@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "Tüm Sendikalar ve Üye Sayıları",
   description: "Türkiye'deki işçi ve kamu sendikalarının listesi, güncel üye sayıları, bağlı oldukları konfederasyonlar ve iletişim bilgileri.",
   keywords: ["sendikalar listesi", "işçi sendikaları", "kamu sendikaları", "sendika üye sayıları", "aktif sendikalar"],
+  alternates: { canonical: "https://sendikalveri.com/sendikalar" },
 };
 
 export default async function UnionsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {

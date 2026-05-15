@@ -9,6 +9,14 @@ import { Badge, SectionCard } from "@/components/ui";
 import { getDashboardData } from "@/lib/data";
 import { compactName, formatDate, formatNumber, formatPercent, TYPE_LABELS, toNumber } from "@/lib/format";
 import type { ChartDatum } from "@/lib/types";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sendika İstatistikleri | Türkiye Çalışma Verileri",
+  description: "Türkiye'deki işçi ve kamu sendikalarına ait sendikalaşma oranları, iş kolu büyüklükleri ve konfederasyon üye dağılımlarını gösteren kapsamlı istatistikler.",
+  keywords: ["sendika istatistikleri", "sendikalaşma oranı", "işçi istatistikleri", "kamu sendika istatistikleri", "iş kolu verileri", "konfederasyon üye sayısı"],
+  alternates: { canonical: "https://sendikalveri.com/istatistikler" },
+};
 
 export default async function StatisticsPage() {
   await connection();

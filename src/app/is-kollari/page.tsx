@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: "İş ve Hizmet Kolları",
   description: "Türkiye'deki sendikalı çalışan sayısına göre iş ve hizmet kolları istatistikleri, güncel sendikalaşma oranları.",
   keywords: ["iş kolları", "hizmet kolları", "sendikalaşma oranı", "sektörel sendika verileri"],
+  alternates: { canonical: "https://sendikalveri.com/is-kollari" },
 };
 
 export default async function SectorsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {

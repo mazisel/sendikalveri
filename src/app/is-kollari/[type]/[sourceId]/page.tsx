@@ -7,12 +7,37 @@ import { PageTransition, AnimatedNumber } from "@/components/motion";
 import { Badge, Metric, SectionCard } from "@/components/ui";
 import { getSectorDetail } from "@/lib/data";
 import { formatDate, formatNumber, formatPercent, typeFromParam, TYPE_LABELS, toNumber } from "@/lib/format";
+import type { Metadata } from "next";
+
+type Props = {
+  params: Promise<{ type: string; sourceId: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { type, sourceId } = await params;
+  const sectorType = typeFromParam(type);
+  const { sector } = await getSectorDetail(sectorType, Number(sourceId));
+
+  if (!sector) {
+    return { title: "İş Kolu Bulunamadı" };
+  }
+
+  const title = `${sector.name} İş Kolu | Sendika İstatistikleri`;
+  const description = `${sector.name} iş kolunda ${formatNumber(sector.current_union_count)} sendika faaliyet göstermektedir. Güncel sendikalaşma oranı ve üye sayısı verilerini inceleyin.`;
+
+  return {
+    title,
+    description,
+    keywords: [sector.name, "İş kolu", "sendika istatistikleri", "sendikalaşma oranı", TYPE_LABELS[sector.type]],
+    alternates: { canonical: `https://sendikalveri.com/is-kollari/${type}/${sourceId}` },
+    openGraph: { title, description, type: "article" },
+    twitter: { card: "summary", title, description },
+  };
+}
 
 export default async function SectorDetailPage({
   params,
-}: {
-  params: Promise<{ type: string; sourceId: string }>;
-}) {
+}: Props) {
   await connection();
   const { type, sourceId } = await params;
   const sectorType = typeFromParam(type);
@@ -35,8 +60,20 @@ export default async function SectorDetailPage({
     value: toNumber(item.member_count),
   }));
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `${sector.name} İş Kolu Sendikaları`,
+    description: `${sector.name} iş kolunda faaliyet gösteren sendikalar ve üye istatistikleri`,
+    numberOfItems: unions.length,
+  };
+
   return (
     <PageTransition>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="space-y-6 pb-12">
         <Link href="/is-kollari" className="group inline-flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors">
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />

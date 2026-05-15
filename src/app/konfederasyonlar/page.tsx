@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "Sendika Konfederasyonları",
   description: "Türkiye'deki işçi ve kamu konfederasyonları (TÜRK-İŞ, HAK-İŞ, DİSK vb.), üye sayıları ve yetkili sendika bilgileri.",
   keywords: ["sendika konfederasyonları", "türk-iş", "hak-iş", "disk", "memur-sen", "türkiye kamu-sen", "kesk", "konfederasyon üye sayıları"],
+  alternates: { canonical: "https://sendikalveri.com/konfederasyonlar" },
 };
 
 export default async function ConfederationsPage({ searchParams }: { searchParams: Promise<SearchParams> }) {

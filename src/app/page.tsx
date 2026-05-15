@@ -9,6 +9,16 @@ import { Badge, SectionCard } from "@/components/ui";
 import { getDashboardData } from "@/lib/data";
 import { compactName, formatDate, formatNumber, formatPercent, TYPE_LABELS, toNumber } from "@/lib/format";
 import type { AnalyticsSummary, ChartDatum, UnionType } from "@/lib/types";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sendikal Veri | Türkiye Sendika Veri Platformu",
+  description: "Türkiye'deki işçi ve kamu sendikalarının güncel üye sayıları, sendikalaşma oranları, iş kolları ve konfederasyon istatistiklerini inceleyin. Çalışma Bakanlığı verilerine dayalı kapsamlı analiz platformu.",
+  keywords: ["sendika", "sendikalar", "işçi sendikası", "kamu sendikası", "sendika üye sayısı", "sendikalaşma oranı", "Türkiye sendika istatistikleri", "iş kolu", "konfederasyon", "çalışma bakanlığı"],
+  alternates: {
+    canonical: "https://sendikalveri.com",
+  },
+};
 
 export default async function Home() {
   await connection();
@@ -23,8 +33,29 @@ export default async function Home() {
     value: toNumber(confederation.member_count),
   }));
 
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Sendikal Veri",
+    url: "https://sendikalveri.com",
+    description: "Türkiye sendika veri analiz platformu",
+    inLanguage: "tr",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://sendikalveri.com/sendikalar?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <PageTransition>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
       <div className="space-y-8 pb-12">
         <section className="flex flex-col gap-3">
           <SourceNote latestDate={formatDate(latestDate)} />
