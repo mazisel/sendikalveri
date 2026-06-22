@@ -12,8 +12,11 @@ services:
       - "3050:3000"
     environment:
       - NODE_ENV=production
-      # - NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-      # - NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+      # Server-only, read at runtime. Values come from the Portainer stack env
+      # vars (substituted here). NEXT_PUBLIC_* names can't be used at runtime —
+      # they are frozen into the bundle at build time.
+      - SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
     networks:
       - sendikalveri-network
 
