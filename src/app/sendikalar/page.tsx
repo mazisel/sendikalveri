@@ -56,6 +56,7 @@ export default async function UnionsPage({ searchParams }: { searchParams: Promi
                   <tr>
                     <th className="px-5 py-3">Sendika</th>
                     <th className="px-5 py-3">Tür</th>
+                    <th className="px-5 py-3 text-right">Dosya No</th>
                     <th className="px-5 py-3">Konfederasyon</th>
                     <th className="px-5 py-3">Kol</th>
                     <th className="px-5 py-3 text-right">Üye</th>
@@ -77,6 +78,7 @@ export default async function UnionsPage({ searchParams }: { searchParams: Promi
                         </Link>
                       </td>
                       <td className="px-5 py-4"><Badge variant="info">{TYPE_LABELS[union.type]}</Badge></td>
+                      <td className="px-5 py-4 text-right font-medium tabular-nums text-zinc-400">{union.file_number ?? "-"}</td>
                       <td className="px-5 py-4 text-zinc-400">{union.confederation_name ?? "-"}</td>
                       <td className="px-5 py-4 text-zinc-400">{union.sector_name ?? union.sector_no ?? "-"}</td>
                       <td className="px-5 py-4 text-right font-semibold tabular-nums text-zinc-200">{formatNumber(union.member_count)}</td>

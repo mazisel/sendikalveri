@@ -11,7 +11,7 @@ import { compactName, formatDate, formatNumber, formatPercent, TYPE_LABELS, toNu
 import type { ChartDatum } from "@/lib/types";
 import type { Metadata } from "next";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic"; // build'de değil, her istekte runtime'da Supabase'den çek
 
 export const metadata: Metadata = {
   title: "Sendika İstatistikleri | Türkiye Çalışma Verileri",

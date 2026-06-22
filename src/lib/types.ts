@@ -28,6 +28,7 @@ export type SourceDate = {
 export type UnionRow = {
   id: number;
   source_id: number;
+  file_number?: number | null;
   type: UnionType;
   name: string;
   full_name: string | null;

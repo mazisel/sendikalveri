@@ -4,20 +4,11 @@ import { HistoryLineChart } from "@/components/Charts";
 import { EmptyState, SourceNote } from "@/components/PageControls";
 import { PageTransition, AnimatedNumber } from "@/components/motion";
 import { Badge, ContactCard, Metric, SectionCard } from "@/components/ui";
-import { getConfederationDetail, getConfederations } from "@/lib/data";
+import { getConfederationDetail } from "@/lib/data";
 import { formatDate, formatNumber, formatPercent, typeFromParam, TYPE_LABELS, toNumber } from "@/lib/format";
 import type { Metadata } from "next";
 
-export const revalidate = 3600;
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  const confederations = await getConfederations('all');
-  return confederations.map((conf) => ({
-    type: conf.type,
-    sourceId: String(conf.source_id),
-  }));
-}
+export const dynamic = "force-dynamic"; // build'de değil, her istekte runtime'da Supabase'den çek
 
 type Props = {
   params: Promise<{ type: string; sourceId: string }>;

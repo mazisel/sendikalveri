@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { getConfederations, getSectors, getUnions } from '@/lib/data';
 
+export const dynamic = "force-dynamic"; // build'de değil, runtime'da Supabase'den üret
+
 const baseUrl = 'https://sendikalveri.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

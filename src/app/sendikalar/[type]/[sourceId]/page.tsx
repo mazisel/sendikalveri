@@ -4,20 +4,11 @@ import { HistoryLineChart } from "@/components/Charts";
 import { EmptyState, SourceNote } from "@/components/PageControls";
 import { PageTransition, AnimatedNumber } from "@/components/motion";
 import { Badge, ContactCard, InfoRow, Metric, SectionCard } from "@/components/ui";
-import { getUnionDetail, getUnions } from "@/lib/data";
+import { getUnionDetail } from "@/lib/data";
 import { formatDate, formatNumber, typeFromParam, TYPE_LABELS, toNumber } from "@/lib/format";
 import type { Metadata } from "next";
 
-export const revalidate = 3600; // ISR: 1 saatte bir yenile
-export const dynamicParams = true; // Listede olmayan ID'ler için de render et
-
-export async function generateStaticParams() {
-  const unions = await getUnions('all', '');
-  return unions.map((union) => ({
-    type: union.type,
-    sourceId: String(union.source_id),
-  }));
-}
+export const dynamic = "force-dynamic"; // build'de değil, her istekte runtime'da Supabase'den çek
 
 type Props = {
   params: Promise<{ type: string; sourceId: string }>;
@@ -149,6 +140,7 @@ export default async function UnionDetailPage({ params }: Props) {
             <h2 className="text-lg font-bold text-zinc-100">Profil</h2>
             <div className="mt-4 text-sm">
               <InfoRow label="Genel Başkan" value={union.president ?? null} />
+              <InfoRow label="Dosya No" value={union.file_number ? String(union.file_number) : null} />
               <InfoRow label="Konfederasyon" value={union.confederation_name} />
               <InfoRow label="İş/Hizmet kolu" value={union.sector_name ?? union.sector_no} />
               <InfoRow label="Kuruluş" value={union.established_year ? String(union.established_year) : null} />

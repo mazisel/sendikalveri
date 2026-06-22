@@ -45,6 +45,7 @@ WHERE is_latest;
 CREATE TABLE public.unions (
     id BIGSERIAL PRIMARY KEY,
     source_id INT NOT NULL,
+    file_number INT,
     type public.union_type NOT NULL,
     name TEXT NOT NULL,
     full_name TEXT,
@@ -71,6 +72,7 @@ CREATE TABLE public.unions (
 );
 
 CREATE INDEX unions_type_member_count_idx ON public.unions (type, member_count DESC);
+CREATE INDEX unions_type_file_number_idx ON public.unions (type, file_number) WHERE file_number IS NOT NULL;
 CREATE INDEX unions_search_idx ON public.unions USING GIN (to_tsvector('simple', coalesce(name, '') || ' ' || coalesce(full_name, '')));
 
 CREATE TABLE public.union_counts (

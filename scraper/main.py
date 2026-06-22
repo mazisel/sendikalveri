@@ -1,6 +1,9 @@
 import argparse
+import html
 import os
+import re
 import sys
+import unicodedata
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -13,12 +16,65 @@ from supabase import Client, create_client
 from urllib3.util.retry import Retry
 
 BASE_URL = "https://sendikadata.com"
+CSGB_BASE_URL = "https://www.csgb.gov.tr"
+CSGB_UNION_SEARCH_PATH = "/api/union/UnionSearch"
+OFFICIAL_CIVIL_UNIONS_URL = "https://aile.gov.tr/sendikalar/hizmet-kollarina-gore-kgs/"
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
     "Accept": "application/json",
 }
 TYPE_TO_BOOL = {"labor": True, "civil": False}
 BOOL_KEY_TO_TYPE = {"true": "labor", "false": "civil"}
+# The source API id is not the official "Sendika Dosya No".
+KNOWN_LABOR_FILE_NUMBERS = [
+    {
+        "file_number": 337,
+        "name": "TÜM EMEK-SEN",
+        "full_name": "Turizm Otel Spor Emekçileri Sendikası",
+    },
+    {
+        "file_number": 492,
+        "name": "YENİ TÜM GÜVENLİK-İŞ",
+        "full_name": "Yeni Tüm Güvenlik Savunma İşçileri Sendikası",
+    },
+    {
+        "file_number": 543,
+        "name": "MAĞAZA-MARKET SEN",
+        "full_name": "Mağaza ve Market İşçileri Sendikası",
+    },
+]
+KNOWN_CIVIL_FILE_NUMBERS = [
+    {
+        "file_number": 424,
+        "name": "HTK-SEN",
+        "full_name": "Hava Trafik Kontrolörleri ve Diğer Ulaştırma Çalışanları Sendikası",
+    },
+    {
+        "file_number": 425,
+        "name": "HÜRRİYETÇİ ULAŞIM-SEN",
+        "full_name": "Hürriyetçi Ulaştırma Hizmetleri Kamu Çalışanları Sendikası",
+    },
+    {
+        "file_number": 435,
+        "name": "MÜHENDİS TEK-SEN ULAŞTIRMA",
+        "full_name": "Mühendis, Teknik Hizmetler ve Diğer Ulaştırma Hizmetleri Çalışanları Sendikası",
+    },
+    {
+        "file_number": 436,
+        "name": "HAVACILIK UZMANLARI SENDİKASI",
+        "full_name": "Havacılık Uzmanları ve Ulaştırma Hizmetleri Kamu Çalışanları Sendikası",
+    },
+    {
+        "file_number": 482,
+        "name": "KAMU ULAŞIM-SEN",
+        "full_name": "Ulaştırma Kamu Çalışanları Sendikası",
+    },
+    {
+        "file_number": 470,
+        "name": "YHS BÜRO-SEN",
+        "full_name": "Yardımcı Hizmetler Sınıfı ve Büro Çalışanları Sendikası",
+    },
+]
 
 SESSION = requests.Session()
 SESSION.headers.update(HEADERS)
@@ -64,6 +120,12 @@ def get_json(path: str, params: dict[str, Any] | None = None) -> Any:
     return response.json()
 
 
+def post_csgb(path: str, data: dict[str, Any]) -> Any:
+    response = SESSION.post(f"{CSGB_BASE_URL}{path}", data=data, timeout=(10, 60))
+    response.raise_for_status()
+    return response.json()
+
+
 def as_type(value: bool | str | None) -> str:
     if value is True or value == "true" or value == "labor":
         return "labor"
@@ -94,6 +156,155 @@ def as_float(value: Any, default: float = 0.0) -> float:
         return float(value)
     except (TypeError, ValueError):
         return default
+
+
+def normalize_key(value: Any) -> str:
+    text = str(value or "").replace("ı", "i").replace("İ", "I")
+    text = "".join(
+        char
+        for char in unicodedata.normalize("NFKD", text)
+        if not unicodedata.combining(char)
+    )
+    text = re.sub(r"[^A-Za-z0-9]+", " ", text).upper()
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def normalized_variants(value: Any) -> set[str]:
+    raw = str(value or "")
+    values = {raw}
+    if "/" in raw:
+        values.update(part for part in raw.split("/") if part.strip())
+
+    variants: set[str] = set()
+    for item in values:
+        key = normalize_key(item)
+        if not key:
+            continue
+        variants.add(key)
+        without_sendikasi = re.sub(r"\bSENDIKASI\b", " ", key)
+        without_sendikasi = re.sub(r"\s+", " ", without_sendikasi).strip()
+        if without_sendikasi:
+            variants.add(without_sendikasi)
+    return variants
+
+
+def file_number_keys(name: Any, full_name: Any = None) -> list[str]:
+    name_keys = normalized_variants(name)
+    full_keys = normalized_variants(full_name)
+    keys = []
+    for name_key in name_keys:
+        for full_key in full_keys:
+            keys.append(f"{name_key}|{full_key}")
+    keys.extend(full_keys)
+    keys.extend(name_keys)
+    return keys
+
+
+def add_file_number_mapping(mapping: dict[str, int], name: Any, full_name: Any, file_number: int) -> None:
+    for key in file_number_keys(name, full_name):
+        mapping.setdefault(key, file_number)
+
+
+def html_lines(value: str) -> list[str]:
+    value = re.sub(r"(?i)<br\s*/?>", "\n", value)
+    value = re.sub(r"(?i)</p>", "\n", value)
+    value = re.sub(r"<[^>]+>", " ", value)
+    value = html.unescape(value)
+    return [re.sub(r"\s+", " ", line).strip() for line in value.splitlines() if line.strip()]
+
+
+def source_file_number(source: dict[str, Any] | None) -> int | None:
+    if not source:
+        return None
+    for key in ("fileNumber", "fileNo", "dosyaNo", "sendikaDosyaNo", "registrationNumber"):
+        value = as_int(source.get(key))
+        if value:
+            return value
+    return None
+
+
+def official_file_number(source: dict[str, Any] | None, official_map: dict[str, int]) -> int | None:
+    if not source:
+        return None
+    explicit_file_number = source_file_number(source)
+    if explicit_file_number:
+        return explicit_file_number
+    for key in file_number_keys(source.get("name"), source.get("fullName")):
+        if key in official_map:
+            return official_map[key]
+    return None
+
+
+def get_official_civil_file_numbers() -> dict[str, int]:
+    mapping: dict[str, int] = {}
+    try:
+        response = SESSION.get(OFFICIAL_CIVIL_UNIONS_URL, timeout=(10, 30), headers={"Accept": "text/html"})
+        response.raise_for_status()
+        for row_html in re.findall(r"(?is)<tr\b.*?</tr>", response.text):
+            cells = re.findall(r"(?is)<td\b[^>]*>(.*?)</td>", row_html)
+            if len(cells) < 4:
+                continue
+            file_number = as_int(" ".join(html_lines(cells[2])))
+            title_lines = html_lines(cells[3])
+            if not file_number or not title_lines:
+                continue
+            add_file_number_mapping(
+                mapping,
+                title_lines[0],
+                " ".join(title_lines[1:]) if len(title_lines) > 1 else None,
+                file_number,
+            )
+    except requests.RequestException as exc:
+        print(f"Official civil file number source skipped: {exc}", file=sys.stderr)
+
+    for item in KNOWN_CIVIL_FILE_NUMBERS:
+        add_file_number_mapping(mapping, item["name"], item["full_name"], item["file_number"])
+    return mapping
+
+
+def get_csgb_file_numbers(type_label: str) -> dict[str, int]:
+    mapping: dict[str, int] = {}
+    page_number = 1
+    total_page = 1
+    while page_number <= total_page:
+        data = post_csgb(
+            CSGB_UNION_SEARCH_PATH,
+            {
+                "according": "Business",
+                "fileno": "FileNo",
+                "type": type_label,
+                "name": "",
+                "dataSourceRequest.PageSize": 50,
+                "dataSourceRequest.PageNumber": page_number,
+            },
+        )
+        result = data.get("data", {}) if isinstance(data, dict) else {}
+        total_page = as_int(result.get("TotalPage"), 1)
+        for item in result.get("Data", []) or []:
+            file_number = as_int(item.get("FileNo"))
+            if not file_number:
+                continue
+            add_file_number_mapping(mapping, item.get("ShortName"), item.get("LongName"), file_number)
+        page_number += 1
+    return mapping
+
+
+def get_official_file_numbers() -> dict[str, dict[str, int]]:
+    civil = get_official_civil_file_numbers()
+    try:
+        civil.update(get_csgb_file_numbers("Kamu"))
+    except requests.RequestException as exc:
+        print(f"Official CSGB public-sector file numbers skipped: {exc}", file=sys.stderr)
+
+    labor: dict[str, int] = {}
+    try:
+        labor = get_csgb_file_numbers("İşçi")
+    except requests.RequestException as exc:
+        print(f"Official CSGB worker file numbers skipped: {exc}", file=sys.stderr)
+    for item in KNOWN_LABOR_FILE_NUMBERS:
+        add_file_number_mapping(labor, item["name"], item["full_name"], item["file_number"])
+
+    return {"labor": labor, "civil": civil}
 
 
 def chunks(rows: list[dict[str, Any]], size: int = 500) -> list[list[dict[str, Any]]]:
@@ -154,10 +365,13 @@ def build_source_dates(raw_dates: dict[str, list[str]]) -> tuple[list[dict[str, 
     return rows, latest
 
 
-def base_union_row(item: dict[str, Any]) -> dict[str, Any]:
+def base_union_row(item: dict[str, Any], official_file_numbers: dict[str, dict[str, int]]) -> dict[str, Any]:
+    row_type = as_home_union_type(item)
+    type_file_numbers = official_file_numbers.get(row_type, {})
     return {
         "source_id": item.get("id"),
-        "type": as_home_union_type(item),
+        "file_number": official_file_number(item, type_file_numbers),
+        "type": row_type,
         "name": item.get("name") or "",
         "full_name": item.get("fullName"),
         "is_sector": item.get("type"),
@@ -166,13 +380,15 @@ def base_union_row(item: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def merge_union_detail(row: dict[str, Any], detail: dict[str, Any] | None) -> dict[str, Any]:
+def merge_union_detail(row: dict[str, Any], detail: dict[str, Any] | None, official_file_numbers: dict[str, dict[str, int]]) -> dict[str, Any]:
     if not detail or as_type(detail.get("type")) != row["type"]:
         return row
+    type_file_numbers = official_file_numbers.get(row["type"], {})
     row.update(
         {
             "name": detail.get("name") or row["name"],
             "full_name": detail.get("fullName") or row.get("full_name"),
+            "file_number": official_file_number(detail, type_file_numbers) or row.get("file_number"),
             "address": detail.get("address"),
             "phone_number": detail.get("phoneNumber"),
             "confederation_source_id": detail.get("confederationId"),
@@ -271,13 +487,14 @@ def fetch_source(skip_details: bool) -> dict[str, Any]:
     analytics_raw = get_json("/api/home/analytics-summary")
     tables_raw = get_json("/api/home/tables-summary")
     source_dates, latest_dates = build_source_dates(raw_dates)
+    official_file_numbers = get_official_file_numbers()
 
-    union_rows = [base_union_row(item) for item in all_unions if is_home_union(item)]
+    union_rows = [base_union_row(item, official_file_numbers) for item in all_unions if is_home_union(item)]
     union_counts: list[dict[str, Any]] = []
     if not skip_details:
         for row in union_rows:
             detail = get_json("/api/union", {"id": row["source_id"]})
-            merge_union_detail(row, detail)
+            merge_union_detail(row, detail, official_file_numbers)
             if row.get("source_detail_available"):
                 counts = get_json("/api/union/counts", {"id": row["source_id"]})
                 for item in counts:
@@ -499,8 +716,11 @@ def apply_sync(supabase: Client, payload: dict[str, Any]) -> None:
 
 def print_summary(payload: dict[str, Any]) -> None:
     union_counter = Counter(row["type"] for row in payload["unions"])
+    file_number_count = sum(1 for row in payload["unions"] if row.get("file_number"))
+    file_number_counter = Counter(row["type"] for row in payload["unions"] if row.get("file_number"))
     print("Source summary")
     print(f"- unions: {len(payload['unions'])} (labor={union_counter['labor']}, civil={union_counter['civil']})")
+    print(f"- official file numbers: {file_number_count} (labor={file_number_counter['labor']}, civil={file_number_counter['civil']})")
     print(f"- source dates: {len(payload['source_dates'])}")
     print(f"- sectors: {len(payload['sectors'])}")
     print(f"- sector snapshots: {len(payload['sector_snapshots'])}")
